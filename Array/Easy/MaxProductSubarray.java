@@ -11,6 +11,7 @@ class Main{
         }
 
         System.out.println(maxProduct(nums));
+        sc.close();
     }
 
     public static int maxProduct(int [] nums){
