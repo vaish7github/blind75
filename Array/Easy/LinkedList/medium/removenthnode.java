@@ -49,6 +49,7 @@ class main {
         for (int i = 0; i < m; i++) {
             fast = fast.next;
         }
+        // edge case
         if (fast == null) {
             return head.next;
         }
