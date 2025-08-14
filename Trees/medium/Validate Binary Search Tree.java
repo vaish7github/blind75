@@ -1,8 +1,8 @@
-// 572. SubNode of Another Tree
+// Validate Binary Search Tree
 
 import java.util.*;
 
-class main {
+class Main {
     static class TreeNode {
         int data;
         TreeNode left;
@@ -18,43 +18,38 @@ class main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
+
         int[] nums = new int[n];
         for (int i = 0; i < nums.length; i++) {
             nums[i] = sc.nextInt();
         }
 
-        // now taking input for the sub tree
-        int m = sc.nextInt();
-        int[] arr = new int[m];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = sc.nextInt();
-        }
-
         sc.close();
 
         TreeNode head = arrtotree(nums);
-        TreeNode SubNode = arrtotree(arr);
-        System.out.print(isSubtree(head, SubNode));
-
+        boolean result =isValidBST(head);
+        System.out.println(result);
     }
 
     public static TreeNode arrtotree(int[] nums) {
         if (nums.length == 0) {
             return null;
         }
-
         TreeNode head = new TreeNode(nums[0]);
-
         Queue<TreeNode> queue = new LinkedList<>();
+
         queue.offer(head);
         int i = 1;
+
         while (!queue.isEmpty() && i < nums.length) {
             TreeNode curr = queue.poll();
 
             if (i < nums.length) {
+
                 curr.left = new TreeNode(nums[i++]);
                 queue.offer(curr.left);
             }
+
             if (i < nums.length) {
                 curr.right = new TreeNode(nums[i++]);
                 queue.offer(curr.right);
@@ -63,38 +58,28 @@ class main {
         return head;
     }
 
-    public static boolean  isSubtree(TreeNode head, TreeNode subHead){
+
+    public static Boolean isValidBST(TreeNode head){
+        return validate (head, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public static Boolean validate(TreeNode head,  long lowerbound, long upperbound){
         if (head == null){
-            return false;
-        }
-        if (subHead== null){
             return true;
         }
 
-        if (head.data == subHead.data){
-            if (findSubtree(head,subHead)){
-                return true;
-            }
+        if (head.data<= lowerbound || head.data>= upperbound){
+            return false;
         }
-        return isSubtree(head.left, subHead) || isSubtree(head.right, subHead);
+
+        return validate (head.left, lowerbound, head.data) && validate ( head.right, head.data, upperbound);
     }
-
-    public static boolean  findSubtree(TreeNode head, TreeNode subHead){
-        if (head == null && subHead == null){
-            return true;
-        }
-
-        if (head == null || subHead== null|| head.data!= subHead.data){
-            return false;
-        }
-        if (!findSubtree(head.left, subHead.left)){
-            return false;
-        }
-        if (!findSubtree(head.right, subHead.right)){
-            return false;
-        }
-
-        return true;
-    }
-
 }
+
+
+/*
+ * 7
+5 1 4 -1 -1 3 6
+false   to take a null input in the case of trees put a -1 
+
+ */
